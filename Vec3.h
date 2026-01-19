@@ -20,7 +20,7 @@ public:
 		return data[in_index];
 	}
 
-	Vec3& operator += (Vec3& other)
+	Vec3& operator += (const Vec3& other)
 	{
 		data[0] += other.data[0];
 		data[1] += other.data[1];
@@ -43,12 +43,51 @@ public:
 		return *this *= (1/number);
 	}
 
+	Vec3 operator + (const Vec3& other)
+	{
+		return Vec3({ data[0] + other.data[0], data[1] + other.data[1], data[2] + other.data[2] });
+	}
+
+	Vec3 operator - (const Vec3& other)
+	{
+		auto& o_data = other.data;
+
+		return Vec3({ data[0] - o_data[0], data[1] - o_data[1], data[2] - o_data[2] });
+	}
+
+	double dot(const Vec3& other)
+	{
+		auto& o_data = other.data;
+		return (data[0] * o_data[0] +
+				data[1] * o_data[1] +
+				data[2] * o_data[2]);
+	}
+
+	Vec3 cross(const Vec3% other)
+	{
+		auto& o_data = other.data;
+		return Vec3({ data[1] * o_data[2] - data[2] * o_data[1]  ,
+					-(data[0] * o_data[2] - data[2] * o_data[0] ),
+					  data[0] * o_data[1] - data[1] * o_data[0] });
+	}
+
 	double length()
 	{
+		return std::sqrt(vec[0]* vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
+	}
 
+	Vec3 unit()
+	{
+		return *this / length();
 	}
 private:
 	double data[3];
 };
 
-#endif // !VEC_3_H
+std::ostream& operator<<(ostream& os, const Vec3& vec)
+{
+	os << "[ " << vec[0] << ", " << vec[1] << ", " << vec[2] << " ]";
+	return os;
+}
+
+#endif
