@@ -7,33 +7,46 @@
 class Vec3
 {
 public:
-	Vec3() : data{ 0.0, 0.0, 0.0 } {};
-	Vec3(double i1, double i2, double i3) : data{ i1, i2, i3} {};
+	double x, y, z;
+	Vec3() : x(0.0), y(0.0), z(0.0) {}
+	Vec3(double in_x, double in_y, double in_z) :
+		x(in_x), y(in_y), z(in_z) {};
 
 	Vec3 operator - ()
 	{
-		return Vec3(-data[0], -data[1], -data[2]);
+		return Vec3(-x, -y, -z);
 	}
 
 	double operator[] (int in_index)
 	{
-		return data[in_index];
+		switch (in_index)
+		{
+		case 0:
+			return x;
+		case 1:
+			return y;
+		case 2:
+			return z;
+		default:
+			std::clog << "Out of bounds!\n";
+			return -1.0;
+		}
 	}
 
 	Vec3& operator += (const Vec3& other)
 	{
-		data[0] += other.data[0];
-		data[1] += other.data[1];
-		data[2] += other.data[2];
+		x += other.x;
+		y += other.y;
+		z += other.z;
 
 		return *this;
 	}
 
 	Vec3& operator *= (double number)
 	{
-		data[0] *= number;
-		data[1] *= number;
-		data[2] *= number;
+		x *= number;
+		y *= number;
+		z *= number;
 
 		return *this;
 	}
@@ -45,48 +58,52 @@ public:
 
 	Vec3 operator + (const Vec3& other)
 	{
-		return Vec3({ data[0] + other.data[0], data[1] + other.data[1], data[2] + other.data[2] });
+		return Vec3({ x + other.x, y + other.y, z + other.z });
 	}
 
 	Vec3 operator - (const Vec3& other)
 	{
-		auto& o_data = other.data;
+		return Vec3({ x - other.x, y - other.y, z - other.z });
+	}
 
-		return Vec3({ data[0] - o_data[0], data[1] - o_data[1], data[2] - o_data[2] });
+	Vec3 operator * (double number)
+	{
+		return Vec3(x * number, y * number, z * number);
+	}
+
+	Vec3 operator / (double number)
+	{
+		return *this * (1 / number);
 	}
 
 	double dot(const Vec3& other)
 	{
-		auto& o_data = other.data;
-		return (data[0] * o_data[0] +
-				data[1] * o_data[1] +
-				data[2] * o_data[2]);
+		return (x * other.x +
+				y * other.y +
+				z * other.z );
 	}
 
-	Vec3 cross(const Vec3% other)
+	Vec3 cross(const Vec3& other)
 	{
-		auto& o_data = other.data;
-		return Vec3({ data[1] * o_data[2] - data[2] * o_data[1]  ,
-					-(data[0] * o_data[2] - data[2] * o_data[0] ),
-					  data[0] * o_data[1] - data[1] * o_data[0] });
+		return Vec3({ y * other.z - z * other.y  ,
+					-(x * other.z - z * other.x) ,
+					  x * other.y - y * other.x });
 	}
 
-	double length()
+	double length() const
 	{
-		return std::sqrt(vec[0]* vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
+		return std::sqrt(x * x + y * y + z * z);
 	}
-
-	Vec3 unit()
-	{
-		return *this / length();
-	}
-private:
-	double data[3];
 };
 
-std::ostream& operator<<(ostream& os, const Vec3& vec)
+Vec3 unit(Vec3& vec)
 {
-	os << "[ " << vec[0] << ", " << vec[1] << ", " << vec[2] << " ]";
+	return vec * vec.length();
+}
+
+std::ostream& operator<<(std::ostream& os, const Vec3& vec)
+{
+	os << "[ " << vec.x << ", " << vec.y << ", " << vec.z << " ]";
 	return os;
 }
 
