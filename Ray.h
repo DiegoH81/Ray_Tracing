@@ -1,14 +1,12 @@
 #pragma once
-#ifndef COLOR_H
-#define COLOR_H
+#ifndef RAY_H
+#define RAY_H
 
-#include <cmath>
-#include <iostream>
 #include "Vec3.h"
 
 using color = Vec3;
 
-void write_color(std::ostream& out, const color in_pixel_color)
+void write_color(std::ostream& out, color in_pixel_color)
 {
 	auto& r = in_pixel_color.x;
 	auto& g = in_pixel_color.y;
@@ -21,4 +19,4 @@ void write_color(std::ostream& out, const color in_pixel_color)
 	out << out_r << " " << out_g << " " << out_b << "\n";
 }
 
-#endif
+#endif#pragma once

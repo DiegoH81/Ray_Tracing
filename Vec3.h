@@ -9,7 +9,7 @@ class Vec3
 public:
 	double x, y, z;
 	Vec3() : x(0.0), y(0.0), z(0.0) {}
-	Vec3(double in_x, double in_y, double in_z) :
+	Vec3(const double &in_x, const double &in_y, const double &in_z) :
 		x(in_x), y(in_y), z(in_z) {};
 
 	Vec3 operator - ()
@@ -56,34 +56,34 @@ public:
 		return *this *= (1/number);
 	}
 
-	Vec3 operator + (const Vec3& other)
+	Vec3 operator + (const Vec3& other) const
 	{
 		return Vec3({ x + other.x, y + other.y, z + other.z });
 	}
 
-	Vec3 operator - (const Vec3& other)
+	Vec3 operator - (const Vec3& other) const
 	{
 		return Vec3({ x - other.x, y - other.y, z - other.z });
 	}
 
-	Vec3 operator * (double number)
+	Vec3 operator * (double number) const
 	{
 		return Vec3(x * number, y * number, z * number);
 	}
 
-	Vec3 operator / (double number)
+	Vec3 operator / (double number) const
 	{
 		return *this * (1 / number);
 	}
 
-	double dot(const Vec3& other)
+	double dot(const Vec3& other) const
 	{
 		return (x * other.x +
 				y * other.y +
 				z * other.z );
 	}
 
-	Vec3 cross(const Vec3& other)
+	Vec3 cross(const Vec3& other) const
 	{
 		return Vec3({ y * other.z - z * other.y  ,
 					-(x * other.z - z * other.x) ,
@@ -96,15 +96,17 @@ public:
 	}
 };
 
-Vec3 unit(Vec3& vec)
+inline Vec3 unit(const Vec3& vec)
 {
-	return vec * vec.length();
+	return vec * (1/vec.length());
 }
 
-std::ostream& operator<<(std::ostream& os, const Vec3& vec)
+std::ostream& operator << (std::ostream& os, const Vec3& vec)
 {
 	os << "[ " << vec.x << ", " << vec.y << ", " << vec.z << " ]";
 	return os;
 }
+
+using Point3 = Vec3;
 
 #endif
