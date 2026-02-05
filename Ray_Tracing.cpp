@@ -3,28 +3,16 @@
 
 #include "Vec3.h"
 #include "Color.h"
+#include "Ray.h"
+
+color ray_color(Ray in_ray)
+{
+    return color(0, 0, 0);
+}
+
 
 int main()
 {
-    /*
-    std::ofstream file("graph.ppm", std::ios::out);
-    int width{ 256 }, height{ 256 };
-
-
-    file << "P3\n";
-    file << width << " " << height << "\n";
-    file << "255\n";
-    for (int i = 0; i < height; i++)
-    {
-        std::clog << "Lines remaining: " << height - i << "\n";
-        for (int j = 0; j < width; j++)
-        {
-            auto pixel_color = color(double(i) / double(height), double(j) / double(width), 0.0);
-            write_color(file, pixel_color);
-        }
-    }
-    */
-
     double aspect_ratio = 16.0 / 9.0;
     int image_width = 400;
 
@@ -48,4 +36,28 @@ int main()
     Point3 viewport_top_left = camera_center - Vec3(0, 0, focal_length) - vector_u / 2 - vector_v / 2;
     Point3 pixel_00 = viewport_top_left + (vector_u + vector_v) * 0.5;
 
+
+    std::cout << "Image width: " << image_width << " Image height: " << image_height << "\n";
+
+    std::ofstream file("graph.ppm", std::ios::out);
+    int width{ 256 }, height{ 256 };
+
+    file << "P3\n";
+    file << width << " " << height << "\n";
+    file << "255\n";
+
+    for (int i = 0; i < height; i++)
+    {
+        std::clog << "Lines remaining: " << height - i << "\n";
+        for (int j = 0; j < width; j++)
+        {
+            auto pixel_center = pixel_00 + (vector_u * j) + (vector_v * i);
+            auto ray_direction = camera_center - pixel_center;
+
+            auto ray = Ray(pixel_center, ray_direction);
+
+            auto pixel_color = ray_color(ray);
+            write_color(file, pixel_color);
+        }
+    }
 }
