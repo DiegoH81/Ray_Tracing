@@ -34,4 +34,18 @@ int main()
 
     double viewport_height = 2.0;
     double viewport_width = viewport_height * (double(image_width) / double(image_height));
+
+
+    double focal_length = 1.0;
+
+    Point3 camera_center = Point3(0, 0, 0);
+    Vec3 vector_u = Vec3(viewport_width, 0, 0);
+    Vec3 vector_v = Vec3(0, -viewport_height, 0);
+
+    Vec3 pixel_delta_u = vector_u / viewport_width;
+    Vec3 pixel_delta_v = vector_v / viewport_height;
+
+    Point3 viewport_top_left = camera_center - Vec3(0, 0, focal_length) - vector_u / 2 - vector_v / 2;
+    Point3 pixel_00 = viewport_top_left + (vector_u + vector_v) * 0.5;
+
 }
