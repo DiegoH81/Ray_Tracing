@@ -10,7 +10,7 @@ color ray_color(Ray in_ray)
     Vec3 unit_ray_direction = unit(in_ray.direction());
     double a = 0.5 * (unit_ray_direction.y + 1.0);
 
-    color new_color = (1.0 - a) * color(1.0, 1.0, 1.0) + a * color(0.0, 0.0, 0.0);
+    color new_color = (1.0 - a) * color(1.0, 1.0, 1.0) + a * color(0.5, 0.7, 1.0);
 
     return new_color;
 }
@@ -39,27 +39,26 @@ int main()
     Vec3 pixel_delta_v = vector_v / image_height;
 
     Point3 viewport_top_left = camera_center - Vec3(0, 0, focal_length) - vector_u / 2 - vector_v / 2;
-    Point3 pixel_00 = viewport_top_left + (vector_u + vector_v) * 0.5;
+    Point3 pixel_00 = viewport_top_left + 0.5 * (pixel_delta_u + pixel_delta_v);
 
 
     std::cout << "Image width: " << image_width << " Image height: " << image_height << "\n";
 
     std::ofstream file("graph.ppm", std::ios::out);
-    int width{ 256 }, height{ 256 };
 
     file << "P3\n";
-    file << width << " " << height << "\n";
+    file << image_width << " " << image_height<< "\n";
     file << "255\n";
 
-    for (int i = 0; i < height; i++)
+    for (int i = 0; i < image_height; i++)
     {
-        std::clog << "Lines remaining: " << height - i << "\n";
-        for (int j = 0; j < width; j++)
+        std::clog << "Lines remaining: " << image_height - i << "\n";
+        for (int j = 0; j < image_width; j++)
         {
-            auto pixel_center = pixel_00 + (vector_u * j) + (vector_v * i);
-            auto ray_direction = camera_center - pixel_center;
+            auto pixel_center = pixel_00 + (pixel_delta_u * j) + (pixel_delta_v * i);
+            auto ray_direction = pixel_center - camera_center;
 
-            auto ray = Ray(pixel_center, ray_direction);
+            auto ray = Ray(camera_center, ray_direction);
 
             auto pixel_color = ray_color(ray);
             write_color(file, pixel_color);
