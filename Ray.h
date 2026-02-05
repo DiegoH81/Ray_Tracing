@@ -11,7 +11,7 @@ public:
 		m_vector(in_vector), m_origin(in_origin) {}
 
 	const Point3& origin() { return m_origin; };
-	const Point3& vector() { return m_vector; };
+	const Point3& direction() { return m_vector; };
 
 
 	Point3 at(const double& in_distance) const

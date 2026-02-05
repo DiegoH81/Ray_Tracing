@@ -107,6 +107,11 @@ std::ostream& operator << (std::ostream& os, const Vec3& vec)
 	return os;
 }
 
+inline Vec3 operator*(double t, const Vec3& v)
+{
+	return v * t;
+}
+
 using Point3 = Vec3;
 
 #endif
