@@ -21,7 +21,7 @@ bool hit_sphere(const Point3& in_center, double radius, Ray& in_ray)
 
 color ray_color(Ray& in_ray)
 {
-    if (hit_sphere(Point3(-1, 0, -1), 0.4, in_ray))
+    if (hit_sphere(Point3(0.0, 0.0, -1.0), 0.4, in_ray))
         return color(1.0, 0.0, 1.0);  // Red color
 
     Vec3 unit_ray_direction = unit(in_ray.direction());
