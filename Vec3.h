@@ -76,20 +76,6 @@ public:
 		return *this * (1 / number);
 	}
 
-	double dot(const Vec3& other) const
-	{
-		return (x * other.x +
-				y * other.y +
-				z * other.z );
-	}
-
-	Vec3 cross(const Vec3& other) const
-	{
-		return Vec3({ y * other.z - z * other.y  ,
-					-(x * other.z - z * other.x) ,
-					  x * other.y - y * other.x });
-	}
-
 	double length() const
 	{
 		return std::sqrt(x * x + y * y + z * z);
@@ -99,6 +85,20 @@ public:
 inline Vec3 unit(const Vec3& vec)
 {
 	return vec * (1/vec.length());
+}
+
+inline double dot(const Vec3& a, const Vec3& b)
+{
+	return (a.x * b.x +
+		a.y * b.y +
+		a.z * b.z);
+}
+
+inline Vec3 cross(const Vec3& a, const Vec3& b)
+{
+	return Vec3({ a.y * b.z - a.z * b.y  ,
+				-(a.x * b.z - a.z * b.x) ,
+				  a.x * b.y - a.y * b.x });
 }
 
 std::ostream& operator << (std::ostream& os, const Vec3& vec)

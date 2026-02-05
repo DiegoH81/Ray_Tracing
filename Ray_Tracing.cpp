@@ -5,8 +5,25 @@
 #include "Color.h"
 #include "Ray.h"
 
-color ray_color(Ray in_ray)
+bool hit_sphere(const Point3& in_center, double radius, Ray& in_ray)
 {
+
+    auto r_c = in_center - in_ray.origin();
+
+    auto a = dot(in_ray.direction(), in_ray.direction());
+    auto b = 2 * (dot(in_ray.direction(), r_c));
+    auto c = dot(r_c, r_c) - (radius * radius);
+
+    auto discriminant = b * b - 4 * a * c;
+
+    return (discriminant >= 0);
+}
+
+color ray_color(Ray& in_ray)
+{
+    if (hit_sphere(Point3(-1, 0, -1), 0.4, in_ray))
+        return color(1.0, 0.0, 1.0);  // Red color
+
     Vec3 unit_ray_direction = unit(in_ray.direction());
     double a = 0.5 * (unit_ray_direction.y + 1.0);
 
