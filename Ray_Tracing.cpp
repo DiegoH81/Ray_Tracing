@@ -7,7 +7,6 @@
 
 double hit_sphere(const Point3& in_center, double radius, Ray& in_ray)
 {
-
     auto r_c = in_center - in_ray.origin();
 
     auto a = dot(in_ray.direction(), in_ray.direction());
