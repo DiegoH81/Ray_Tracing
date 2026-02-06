@@ -10,7 +10,14 @@ public:
 	Point3 point;
 	Vec3 normal;
 	double t;
+	bool front_face;
 
+	void set_face_normal(const Ray& in_ray, const Vec3& outward_normal)
+	{
+		front_face = dot(in_ray.direction(), outward_normal) < 0;
+
+		normal = front_face ? outward_normal : -1*outward_normal;
+	}
 };
 
 class Hittable

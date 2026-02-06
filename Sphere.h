@@ -36,7 +36,10 @@ public:
 
 		in_record.t = root;
 		in_record.point = in_ray.at(root);
-		in_record.normal = (in_record.point - m_center) / m_radius;
+		Vec3 outward_normal_unit = (in_record.point - m_center) / m_radius;
+
+		in_record.set_face_normal(in_ray, outward_normal_unit);
+
 
 		return true;
 	}
