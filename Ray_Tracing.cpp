@@ -18,6 +18,7 @@ int main()
     cam.image_width = 400;
     cam.focal_length = 1.0;
     cam.samples_per_pixel = 100;
+    cam.max_depth = 50;
 
     cam.render(world, "graph.ppm");
 }

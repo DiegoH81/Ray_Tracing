@@ -12,11 +12,12 @@ class Camera
 public:
     int image_width;
     int samples_per_pixel;
+    int max_depth;
     double viewport_height, aspect_ratio, focal_length;
 
-    Camera():
+    Camera() :
         image_width(100), viewport_height(2.0), aspect_ratio(1.0), focal_length(1.0),
-        samples_per_pixel(10),
+        samples_per_pixel(10), max_depth(1),
         image_height(-1), camera_center(), pixel_00(), pixel_delta_u(), pixel_delta_v(),
         pixel_sample_scale(-1.0)
     {}
@@ -43,7 +44,7 @@ public:
                 for (int n = 0; n < samples_per_pixel; n++)
                 {
                     auto r = get_ray(j, i);
-                    pixel_color += ray_color(r, world);
+                    pixel_color += ray_color(r, world, max_depth);
                 }
                 write_color(file, pixel_color * pixel_sample_scale);
             }
@@ -78,13 +79,17 @@ private:
         pixel_00 = viewport_top_left + 0.5 * (pixel_delta_u + pixel_delta_v);
     }
 
-    color ray_color(Ray& in_ray, Hittable& world)
+    color ray_color(const Ray& in_ray, Hittable& world, int in_depth)
     {
+        if (in_depth < 0)
+            return color(0.0, 0.0, 0.0);
+
         HitRecord rec;
         if (world.hit(in_ray, Interval(0, infinity), rec))
         {
-            //std::cout << "HITTT\n";
-            return 0.5 * (rec.normal + color(1.0, 1.0, 1.0));
+            Vec3 direction = random_on_hemisphere(rec.normal);
+            //return 0.5 * (rec.normal + color(1.0, 1.0, 1.0));
+            return 0.5 * ray_color(Ray(rec.point, direction), world, in_depth - 1);
         }
 
         // Background
@@ -100,7 +105,6 @@ private:
         auto pixel_sample = pixel_00 + ((offset.x + in_x) * pixel_delta_u) +
                                        ((offset.y + in_y) * pixel_delta_v);
         
-
         auto ray_origin = camera_center;
         auto ray_direction = pixel_sample - ray_origin;
 

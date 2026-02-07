@@ -80,6 +80,21 @@ public:
 	{
 		return std::sqrt(x * x + y * y + z * z);
 	}
+
+	double length_squared() const
+	{
+		return x * x + y * y + z * z;
+	}
+
+	static Vec3 random()
+	{
+		return Vec3(random_double(), random_double(), random_double());
+	}
+
+	static Vec3 random(double in_min, double in_max)
+	{
+		return Vec3(random_double(in_min, in_max), random_double(in_min, in_max), random_double(in_min, in_max));
+	}
 };
 
 inline Vec3 unit(const Vec3& vec)
@@ -87,11 +102,24 @@ inline Vec3 unit(const Vec3& vec)
 	return vec * (1/vec.length());
 }
 
+inline Vec3 random_unit_vector()
+{
+	while (true)
+	{
+		auto v = Vec3::random(-1.0, 1.0);
+		auto lensq = v.length_squared(); // See if vector fits inside r = 1.0 circle
+
+		if (1e-160 < lensq && lensq <= 1)
+			return v/std::sqrt(lensq);
+	}
+}
+
+
 inline double dot(const Vec3& a, const Vec3& b)
 {
 	return (a.x * b.x +
-		a.y * b.y +
-		a.z * b.z);
+			a.y * b.y +
+			a.z * b.z);
 }
 
 inline Vec3 cross(const Vec3& a, const Vec3& b)
@@ -110,6 +138,16 @@ inline std::ostream& operator << (std::ostream& os, const Vec3& vec)
 inline Vec3 operator*(double t, const Vec3& v)
 {
 	return v * t;
+}
+
+inline Vec3 random_on_hemisphere(Vec3& in_normal)
+{
+	auto random_vector = random_unit_vector();
+
+	if (dot(random_vector, in_normal) > 0.0)
+		return random_vector;
+	else
+		return -1*random_vector;
 }
 
 using Point3 = Vec3;
