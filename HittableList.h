@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HITTABLE_LIST_H
 #define HITTABLE_LIST_H
 
@@ -44,7 +43,7 @@ public:
 			}
 		}
 
-		return true;
+		return hit_anything;
 	}
 };
 

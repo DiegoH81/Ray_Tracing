@@ -1,4 +1,3 @@
-#pragma once
 #ifndef RAY_H
 #define RAY_H
 
@@ -23,4 +22,4 @@ private:
 	Point3 m_origin;
 };
 
-#endif#pragma once
+#endif

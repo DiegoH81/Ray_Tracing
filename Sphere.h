@@ -1,4 +1,3 @@
-#pragma once
 #ifndef SPHERE_H
 #define SPHERE_H
 
@@ -39,7 +38,6 @@ public:
 		Vec3 outward_normal_unit = (in_record.point - m_center) / m_radius;
 
 		in_record.set_face_normal(in_ray, outward_normal_unit);
-
 
 		return true;
 	}
