@@ -13,6 +13,16 @@ public:
 	
 	double size() const { return max - min; }
 
+	double clamp(double in_x)
+	{
+		if (in_x < min)
+			return min;
+		else if (in_x > max)
+			return max;
+
+		return in_x;
+	}
+
 	bool contains(double in_x) { return min <= in_x && in_x <= max; }
 
 	bool surrounds(double in_x) { return min < in_x && in_x < max; }
