@@ -10,7 +10,7 @@ public:
 	Sphere(const Point3& in_center, const double& in_radius) :
 		m_center(in_center), m_radius(std::fmax(0.0, in_radius)) {}
 
-	bool hit(const Ray& in_ray, double t_min, double t_max, HitRecord& in_record) override
+	bool hit(const Ray& in_ray, Interval in_interval, HitRecord& in_record) override
 	{
 		auto r_c = m_center - in_ray.origin();
 
@@ -26,10 +26,10 @@ public:
 
 
 		auto root = (h - sqrt_d) / a;
-		if (root <= t_min || root >= t_max)
+		if (!in_interval.surrounds(root)) // Out of bounds
 		{
 			root = (h + sqrt_d) / a;
-			if (root <= t_min || root >= t_max)
+			if (!in_interval.surrounds(root))
 				return false;
 		}
 

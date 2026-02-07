@@ -27,15 +27,15 @@ public:
 		objects.clear();
 	}
 
-	bool hit(const Ray& in_ray, double t_min, double t_max, HitRecord& in_record) override
+	bool hit(const Ray& in_ray, Interval in_interval, HitRecord& in_record) override
 	{
 		HitRecord temp_rec;
 		bool hit_anything{ false };
-		double closest_so_far = t_max;
+		double closest_so_far = in_interval.max;
 
 		for (auto& object : objects)
 		{
-			if (object->hit(in_ray, t_min, closest_so_far, temp_rec))
+			if (object->hit(in_ray, Interval(in_interval.min, closest_so_far), temp_rec))
 			{
 				hit_anything = true;
 				closest_so_far = temp_rec.t;

@@ -8,7 +8,7 @@
     color ray_color(Ray& in_ray, Hittable &world)
     {
         HitRecord rec;
-        if (world.hit(in_ray, 0, infinity, rec))
+        if (world.hit(in_ray, Interval(0, infinity), rec))
             return 0.5 * (rec.normal + color(1.0, 1.0, 1.0));
 
 
