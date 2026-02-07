@@ -11,11 +11,14 @@ class Camera
 {
 public:
     int image_width;
+    int samples_per_pixel;
     double viewport_height, aspect_ratio, focal_length;
 
     Camera():
         image_width(100), viewport_height(2.0), aspect_ratio(1.0), focal_length(1.0),
-        image_height(-1), camera_center(), pixel_00(), pixel_delta_u(), pixel_delta_v()
+        samples_per_pixel(10),
+        image_height(-1), camera_center(), pixel_00(), pixel_delta_u(), pixel_delta_v(),
+        pixel_sample_scale(-1.0)
     {}
 
     void render(HittableList& world, const std::string& filename)
@@ -35,23 +38,27 @@ public:
             std::clog << "Lines remaining: " << image_height - i << "\n";
             for (int j = 0; j < image_width; j++)
             {
-                auto pixel_center = pixel_00 + (pixel_delta_u * j) + (pixel_delta_v * i);
-                auto ray_direction = pixel_center - camera_center;
+                color pixel_color(0.0, 0.0, 0.0);
 
-                auto ray = Ray(camera_center, ray_direction);
-
-                auto pixel_color = ray_color(ray, world);
-                write_color(file, pixel_color);
+                for (int n = 0; n < samples_per_pixel; n++)
+                {
+                    auto r = get_ray(j, i);
+                    pixel_color += ray_color(r, world);
+                }
+                write_color(file, pixel_color * pixel_sample_scale);
             }
         }
     }
 private:
     int image_height;
+    double pixel_sample_scale;
     Point3 camera_center, pixel_00;
     Vec3 pixel_delta_u, pixel_delta_v;
 
     void initialize()
     {
+        pixel_sample_scale = 1.0 / double(samples_per_pixel);
+
         image_height = int(image_width / aspect_ratio);
         image_height = (image_height < 1 ? 1 : image_height);
 
@@ -75,13 +82,35 @@ private:
     {
         HitRecord rec;
         if (world.hit(in_ray, Interval(0, infinity), rec))
+        {
+            //std::cout << "HITTT\n";
             return 0.5 * (rec.normal + color(1.0, 1.0, 1.0));
+        }
 
         // Background
         Vec3 unit_ray_direction = unit(in_ray.direction());
         double a = 0.5 * (unit_ray_direction.y + 1.0);
 
         return (1.0 - a) * color(1.0, 1.0, 1.0) + a * color(0.5, 0.7, 1.0);;
+    }
+
+    Ray get_ray(int in_x, int in_y)
+    {
+        auto offset = sample_square();
+        auto pixel_sample = pixel_00 + ((offset.x + in_x) * pixel_delta_u) +
+                                       ((offset.y + in_y) * pixel_delta_v);
+        
+
+        auto ray_origin = camera_center;
+        auto ray_direction = pixel_sample - ray_origin;
+
+        return Ray(ray_origin, ray_direction);
+
+    }
+
+    Vec3 sample_square()
+    {
+        return Vec3(random_double() - 0.5, random_double() - 0.5, 0.0);
     }
 };
 
