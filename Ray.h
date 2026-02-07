@@ -1,18 +1,16 @@
-#pragma once
 #ifndef RAY_H
 #define RAY_H
 
 #include "Vec3.h"
 
-
 class Ray
 {
 public:
-	Ray(const Vec3& in_vector, const Point3& in_origin) :
-		m_vector(in_vector), m_origin(in_origin) {}
+	Ray(const Vec3& in_origin, const Point3& in_direction) :
+		m_vector(in_direction), m_origin(in_origin) {}
 
-	const Point3& origin() { return m_origin; };
-	const Point3& vector() { return m_vector; };
+	const Point3& origin() const { return m_origin; };
+	const Point3& direction() const { return m_vector; };
 
 
 	Point3 at(const double& in_distance) const
@@ -24,4 +22,4 @@ private:
 	Point3 m_origin;
 };
 
-#endif#pragma once
+#endif

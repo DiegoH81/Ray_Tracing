@@ -1,25 +1,22 @@
-#include <iostream>
-#include <fstream>
+#include "RTH.h"
 
-#include "Vec3.h"
-#include "Color.h"
+#include "Hittable.h"
+#include "HittableList.h"
+#include "Sphere.h"
+#include "Camera.h"
 
 int main()
 {
-    std::ofstream file("graph.ppm", std::ios::out);
-    int width{ 256 }, height{ 256 };
+    // World
+    HittableList world;
+    world.add(std::make_shared<Sphere>(Point3(0.0, 0.0, -1.0), 0.5));
+    world.add(std::make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100));
 
+    // Camera
+    Camera cam;
+    cam.aspect_ratio = 16.0 / 9.0;
+    cam.image_width = 400;
+    cam.focal_length = 1.0;
 
-    file << "P3\n";
-    file << width << " " << height << "\n";
-    file << "255\n";
-    for (int i = 0; i < height; i++)
-    {
-        std::clog << "Lines remaining: " << height - i << "\n";
-        for (int j = 0; j < width; j++)
-        {
-            auto pixel_color = color(double(i) / double(height), double(j) / double(width), 0.0);
-            write_color(file, pixel_color);
-        }
-    }
+    cam.render(world, "graph.ppm");
 }
