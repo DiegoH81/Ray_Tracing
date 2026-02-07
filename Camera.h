@@ -85,10 +85,10 @@ private:
             return color(0.0, 0.0, 0.0);
 
         HitRecord rec;
-        if (world.hit(in_ray, Interval(0, infinity), rec))
+        if (world.hit(in_ray, Interval(0.001, infinity), rec))
         {
-            Vec3 direction = random_on_hemisphere(rec.normal);
-            //return 0.5 * (rec.normal + color(1.0, 1.0, 1.0));
+            //Vec3 direction = random_on_hemisphere(rec.normal);
+            Vec3 direction = rec.normal + random_unit_vector();
             return 0.5 * ray_color(Ray(rec.point, direction), world, in_depth - 1);
         }
 
