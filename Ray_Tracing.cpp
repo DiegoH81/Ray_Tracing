@@ -12,7 +12,6 @@ int main()
     world.add(std::make_shared<Sphere>(Point3(0.0, 0.0, -1.0), 0.5));
     world.add(std::make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100));
 
-
     // Camera
     Camera cam;
     cam.aspect_ratio = 16.0 / 9.0;
