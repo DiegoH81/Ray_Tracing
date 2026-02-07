@@ -101,7 +101,7 @@ inline Vec3 cross(const Vec3& a, const Vec3& b)
 				  a.x * b.y - a.y * b.x });
 }
 
-std::ostream& operator << (std::ostream& os, const Vec3& vec)
+inline std::ostream& operator << (std::ostream& os, const Vec3& vec)
 {
 	os << "[ " << vec.x << ", " << vec.y << ", " << vec.z << " ]";
 	return os;

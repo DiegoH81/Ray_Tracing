@@ -2,8 +2,8 @@
 #ifndef HITTABLE_LIST_H
 #define HITTABLE_LIST_H
 
+#include "RTH.h"
 #include "Hittable.h"
-#include <memory>
 #include <vector>
 
 class HittableList : public Hittable

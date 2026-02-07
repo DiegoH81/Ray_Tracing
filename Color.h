@@ -8,7 +8,7 @@
 
 using color = Vec3;
 
-void write_color(std::ostream& out, const color in_pixel_color)
+inline void write_color(std::ostream& out, const color in_pixel_color)
 {
 	auto& r = in_pixel_color.x;
 	auto& g = in_pixel_color.y;
