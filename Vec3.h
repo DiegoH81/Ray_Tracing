@@ -71,6 +71,11 @@ public:
 		return Vec3(x * number, y * number, z * number);
 	}
 
+	Vec3 operator * (const Vec3 &other) const
+	{
+		return Vec3(x * other.x, y * other.y, z * other.z);
+	}
+
 	Vec3 operator / (double number) const
 	{
 		return *this * (1 / number);
@@ -160,7 +165,7 @@ inline Vec3 random_on_hemisphere(Vec3& in_normal)
 		return -1*random_vector;
 }
 
-inline Vec3 reflect(Vec3& in_vector, Vec3& in_normal)
+inline Vec3 reflect(const Vec3& in_vector, const Vec3& in_normal)
 {
 	return in_vector - 2 * dot(in_vector, in_normal) * in_normal;
 }

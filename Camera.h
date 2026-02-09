@@ -4,6 +4,7 @@
 #include "RTH.h"
 #include "HittableList.h"
 #include "Color.h"
+#include "Material.h"
 
 #include <fstream>
 
@@ -87,9 +88,13 @@ private:
         HitRecord rec;
         if (world.hit(in_ray, Interval(0.001, infinity), rec))
         {
-            //Vec3 direction = random_on_hemisphere(rec.normal);
-            Vec3 direction = rec.normal + random_unit_vector();
-            return 0.5 * ray_color(Ray(rec.point, direction), world, in_depth - 1);
+            Ray scattered;
+            color attenuation;
+
+            if (rec.material->scatter(in_ray, rec, attenuation, scattered))
+                return attenuation * ray_color(scattered, world, in_depth - 1);
+
+            return color(0.0, 0.0, 0.0);
         }
 
         // Background

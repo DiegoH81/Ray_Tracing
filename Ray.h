@@ -6,6 +6,10 @@
 class Ray
 {
 public:
+	Ray():
+		m_vector(), m_origin()
+	{ }
+
 	Ray(const Vec3& in_origin, const Point3& in_direction) :
 		m_vector(in_direction), m_origin(in_origin) {}
 
