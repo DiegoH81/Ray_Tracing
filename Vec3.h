@@ -160,6 +160,11 @@ inline Vec3 random_on_hemisphere(Vec3& in_normal)
 		return -1*random_vector;
 }
 
+inline Vec3 reflect(Vec3& in_vector, Vec3& in_normal)
+{
+	return in_vector - 2 * dot(in_vector, in_normal) * in_normal;
+}
+
 using Point3 = Vec3;
 
 #endif

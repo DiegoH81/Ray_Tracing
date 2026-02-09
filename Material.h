@@ -23,11 +23,15 @@ public:
 		albedo(in_color) {}
 
 
-	bool scatter(Ray& in_ray, HitRecord& in_record, color attenuation, Ray& scatter_ray)
+	bool scatter(Ray& in_ray, HitRecord& in_hit, color attenuation, Ray& scatter_ray)
 	{
-		auto scatter_dir = in_record.normal + random_unit_vector();
+		auto scatter_dir = in_hit.normal + random_unit_vector();
+		if (scatter_dir.near_zero())
+			scatter_dir = in_hit.normal;
+
+
 		attenuation = albedo;
-		scatter_ray = Ray(in_record.point, scatter_dir);
+		scatter_ray = Ray(in_hit.point, scatter_dir);
 		return true;
 	}
 
