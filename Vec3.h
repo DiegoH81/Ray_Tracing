@@ -86,6 +86,16 @@ public:
 		return x * x + y * y + z * z;
 	}
 
+	bool near_zero()
+	{
+		double s = 1e-160;
+
+		if ((std::fabs(x) <= s) && (std::fabs(y) <= s) && (std::fabs(z) <= s))
+			return true;
+
+		return false;
+	}
+
 	static Vec3 random()
 	{
 		return Vec3(random_double(), random_double(), random_double());
