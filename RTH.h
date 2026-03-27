@@ -21,7 +21,7 @@ inline double random_double()
     return std::rand() / (RAND_MAX + 1.0);
 }
 
-inline double random_double_interval(double in_min, double in_max)
+inline double random_double(double in_min, double in_max)
 {
     return in_min + random_double() * (in_max - in_min);
 }
